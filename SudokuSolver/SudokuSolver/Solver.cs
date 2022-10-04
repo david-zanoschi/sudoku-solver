@@ -3,12 +3,16 @@ using System.Text;
 
 namespace SudokuSolver
 {
-    internal class Solver
+    /// <summary>The sudoku solver class.</summary>
+    public class Solver
     {
         private const int BoardSize = 9;
 
         private static readonly IEnumerable<int> AllPossibleValues = Enumerable.Range(1, 9);
 
+        /// <summary>Finds all solutions to the given sudoku, and returns a string with all sudoku elements, in order.</summary>
+        /// <param name="sudoku">The sudoku to solve.</param>
+        /// <returns>The list of possible solutions.</returns>
         public static List<string> ComputeSolutions(int[][] sudoku)
         {
             var solutions = new List<string>();
@@ -17,7 +21,13 @@ namespace SudokuSolver
             return solutions;
         }
 
-        public static void AssignValueToNode(int[][] initialSudoku, int row, int col, Dictionary<Point, int> optionsSoFar, List<string> solutions)
+        /// <summary>Takes in a solution string, which consists in sudoku elements in order, separated by a space.</summary>
+        /// <param name="solution">The solution string.</param>
+        /// <returns>The sudoku elements in a 9x9 grid.</returns>
+        public static string FormatSolution(string solution)
+            => solution.Batch(2 * BoardSize).Aggregate(new StringBuilder(), (acc, item) => acc.AppendLine(string.Join("", item))).ToString();
+
+        private static void AssignValueToNode(int[][] initialSudoku, int row, int col, Dictionary<Point, int> optionsSoFar, List<string> solutions)
         {
             var shouldGoToNextRow = col == BoardSize;
             if (shouldGoToNextRow)
@@ -47,9 +57,6 @@ namespace SudokuSolver
                 AssignValueToNode(initialSudoku, row, col + 1, newOptionsSoFar, solutions);
             }
         }
-
-        public static string FormatSolution(string solution)
-            => solution.Batch(2 * BoardSize).Aggregate(new StringBuilder(), (acc, item) => acc.AppendLine(string.Join("", item))).ToString();
 
         private static IEnumerable<int> ComputePossibleValuesForNode(int[][] initialSudoku, int row, int col, Dictionary<Point, int> optionsSoFar)
         {
