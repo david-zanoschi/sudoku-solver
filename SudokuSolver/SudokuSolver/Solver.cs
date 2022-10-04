@@ -6,7 +6,7 @@ namespace SudokuSolver
     /// <summary>The sudoku solver class.</summary>
     public class Solver
     {
-        private const int BoardSize = 9;
+        public const int BoardSize = 9;
 
         private static readonly IEnumerable<int> AllPossibleValues = Enumerable.Range(1, 9);
 
