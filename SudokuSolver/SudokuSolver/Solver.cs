@@ -6,9 +6,11 @@ namespace SudokuSolver
     /// <summary>The sudoku solver class.</summary>
     public class Solver
     {
-        public const int BoardSize = 9;
+        public const int BoardSize = 15;
+        public const int InnerAreaRowLength = 5;
+        public const int InnerAreaColLength = 3;
 
-        private static readonly IEnumerable<int> AllPossibleValues = Enumerable.Range(1, 9);
+        private static readonly IEnumerable<int> AllPossibleValues = Enumerable.Range(1, BoardSize);
 
         /// <summary>Finds all solutions to the given sudoku, and returns a string with all sudoku elements, in order.</summary>
         /// <param name="sudoku">The sudoku to solve.</param>
@@ -112,11 +114,11 @@ namespace SudokuSolver
 
         private static IEnumerable<(int Row, int Col)> GetSquareCoordinates(int rowIndex, int columnIndex)
         {
-            var originX = rowIndex / 3 * 3;
-            var originY = columnIndex / 3 * 3;
+            var originX = rowIndex / InnerAreaColLength * InnerAreaColLength;
+            var originY = columnIndex / InnerAreaRowLength * InnerAreaRowLength;
 
-            var rowMax = originX + 3;
-            var colMax = originY + 3;
+            var rowMax = originX + InnerAreaColLength;
+            var colMax = originY + InnerAreaRowLength;
 
             var result = new List<(int, int)>();
             for (int i = originX; i < rowMax; i++)
